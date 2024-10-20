@@ -3,7 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
-export const jakarta = Plus_Jakarta_Sans({
+const jakarta = Plus_Jakarta_Sans({
   display: "swap",
   subsets: ["latin"],
   weight: ["400", "700"],
