@@ -8,6 +8,13 @@ import dynamic from "next/dynamic";
 
 const ReactConfetti = dynamic(() => import("react-confetti"), { ssr: false });
 
+interface SantetFormValues {
+  namaPenyihir: string;
+  namaTarget: string;
+  jenisSantet: string;
+  isPermanent: boolean;
+}
+
 export default function SantetOnline() {
   const [isLoading, setIsLoading] = useState(false);
   const [curseResult, setCurseResult] = useState("");
@@ -15,7 +22,7 @@ export default function SantetOnline() {
   const { toast } = useToast();
 
   const onSubmit = useCallback(
-    async (values: any) => {
+    async (values: SantetFormValues) => {
       setIsLoading(true);
       try {
         const response = await fetch("/api/generate-curse", {
@@ -41,10 +48,14 @@ export default function SantetOnline() {
         } else {
           throw new Error(data.error || "Terjadi kesalahan");
         }
-      } catch (error) {
+      } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Terjadi kesalahan saat memproses santet.";
         toast({
           title: "Error",
-          description: "Terjadi kesalahan saat memproses santet.",
+          description: errorMessage,
           variant: "destructive",
         });
       } finally {
